@@ -1,0 +1,21 @@
+name: RandomTeleport
+version: "1.0"
+api-version: "1.12"
+description: "RandomTeleport"
+
+author: Teddy
+authors: []
+website: https://twieteddy.github.io
+
+main: io.github.twieteddy.randomteleport.RandomTeleportPlugin
+database: false
+depend: []
+softdepend: [WorldBorder]
+
+permissions:
+  randomteleport.command.rtp:
+    description: Teleports you to a random place
+    default: false
+
+commands:
+  rtp:
