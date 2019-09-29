@@ -1,2 +1,8 @@
+# search for a safe spot before teleporting
 safe_teleport: false
-border_mode: vanillaborder # alternative: worldborderplugin
+
+# max tries to find a safe spot
+max_tries: 10
+
+# can be "vanilla" or "plugin"
+border_mode: vanilla

@@ -24,7 +24,6 @@
       </plugin>
     </plugins>
   </build>
-
   <!-- project properties -->
   <properties>
     <!-- utf-8 encoding -->
@@ -88,6 +87,14 @@
       <artifactId>annotations</artifactId>
       <version>17.0.0</version>
       <scope>compile</scope>
+    </dependency>
+    <!-- WorldBorder Plugin -->
+    <!-- mvn install:install-file -Dfile="libs\WorldBorder.jar" -DgroupId="com.wimbli.WorldBorder" -DartifactId=WorldBorder -Dversion="1.8.7" -Dpackaging=jar -->
+    <dependency>
+      <groupId>com.wimbli.WorldBorder</groupId>
+      <artifactId>WorldBorder</artifactId>
+      <version>1.8.7</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 </project>

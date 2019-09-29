@@ -14,8 +14,10 @@ softdepend: [WorldBorder]
 
 permissions:
   randomteleport.command.rtp:
-    description: Teleports you to a random place
-    default: false
+    default: op
 
 commands:
   rtp:
+    description: Teleports you to a random location inside the worldborder
+    permission: randomteleport.command.rtp
+    aliases: []

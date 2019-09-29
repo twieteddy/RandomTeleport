@@ -1,12 +1,11 @@
 package io.github.twieteddy.randomteleport.commands;
 
 import io.github.twieteddy.randomteleport.RandomTeleportPlugin;
-import java.util.Random;
+import io.github.twieteddy.randomteleport.borders.Border;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Location;
-import org.bukkit.WorldBorder;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,10 +14,13 @@ import org.bukkit.entity.Player;
 public class RtpCommand implements CommandExecutor {
   private final String playerFeedback;
   private final String safeSpotNotFound;
+  private final Border border;
 
   public RtpCommand(RandomTeleportPlugin plugin) {
+    super();
     playerFeedback = plugin.getMessage("player_feedback");
     safeSpotNotFound = plugin.getMessage("safe_spot_not_found");
+    border = plugin.getBorder();
   }
 
   @Override
@@ -26,30 +28,22 @@ public class RtpCommand implements CommandExecutor {
     if (!(sender instanceof Player))
       return true;
 
+    if (!sender.hasPermission("randomteleport.command.rtp"))
+      return true;
+
     Player p = (Player) sender;
-    Random random = new Random();
-    WorldBorder border = p.getWorld().getWorldBorder();
-
-    double size = (int) border.getSize();
-    int x = random.nextInt((int) size / 2);
-    int z = random.nextInt((int) size / 2);
-
     Location oldLocation = p.getLocation();
-    Location newLocation = p.getWorld()
-        .getHighestBlockAt(x, z)
-        .getLocation()
-        .add(border.getCenter());
-    newLocation = p.getWorld().getHighestBlockAt(newLocation).getLocation();
-
+    Location newLocation = border.getRandomLocation(p.getWorld());
     double distance = newLocation.distance(oldLocation);
 
     p.teleport(newLocation);
     p.spigot().sendMessage(
         ChatMessageType.CHAT,
-        new ComponentBuilder(parsePlayerFeedback(
-            oldLocation.getX(), oldLocation.getY(), oldLocation.getZ(),
-            newLocation.getX(), newLocation.getY(), newLocation.getZ(),
-            distance))
+        new ComponentBuilder(
+            parsePlayerFeedback(
+              oldLocation.getX(), oldLocation.getY(), oldLocation.getZ(),
+              newLocation.getX(), newLocation.getY(), newLocation.getZ(),
+              distance))
           .create());
     return true;
   }
