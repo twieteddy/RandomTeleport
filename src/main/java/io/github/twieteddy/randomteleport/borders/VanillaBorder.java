@@ -17,9 +17,10 @@ public class VanillaBorder extends Border {
     int x = random.nextInt((int) size / 2);
     int z = random.nextInt((int) size / 2);
 
-    Location newLocation = new Location(world, x, 0, z)
-        .add(vanillaBorder.getCenter());
+    Location newLocation = world
+        .getHighestBlockAt(vanillaBorder.getCenter().add(x, 0, z))
+        .getLocation();
 
-    return world.getHighestBlockAt(newLocation).getLocation();
+    return newLocation;
   }
 }
