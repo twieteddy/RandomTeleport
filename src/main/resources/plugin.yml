@@ -7,15 +7,17 @@ author: Teddy
 authors: []
 website: https://twieteddy.github.io
 
-main: io.github.twieteddy.randomteleport.RandomTeleportPlugin
+main: io.github.twieteddy.randomteleport.RandomTeleport
 database: false
 depend: []
 softdepend: [WorldBorder]
 
 permissions:
   randomteleport.command.rtp:
-    description: Teleports you to a random place
-    default: false
+    default: op
 
 commands:
   rtp:
+    description: Teleports you to a random location inside the worldborder
+    permission: randomteleport.command.rtp
+    aliases: []
