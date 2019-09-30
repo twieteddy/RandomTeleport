@@ -7,7 +7,7 @@ author: Teddy
 authors: []
 website: https://twieteddy.github.io
 
-main: io.github.twieteddy.randomteleport.RandomTeleportPlugin
+main: io.github.twieteddy.randomteleport.RandomTeleport
 database: false
 depend: []
 softdepend: [WorldBorder]
