@@ -2,13 +2,16 @@ package io.github.twieteddy.randomteleport.commands;
 
 import io.github.twieteddy.randomteleport.RandomTeleport;
 import io.github.twieteddy.randomteleport.borders.Border;
-import io.github.twieteddy.randomteleport.dataclasses.Messages;
-import io.github.twieteddy.randomteleport.dataclasses.Permissions;
-import io.github.twieteddy.randomteleport.dataclasses.Variables;
+import io.github.twieteddy.randomteleport.constants.Messages;
+import io.github.twieteddy.randomteleport.constants.Permissions;
+import io.github.twieteddy.randomteleport.constants.Properties;
+import io.github.twieteddy.randomteleport.constants.Variables;
+import java.util.ArrayList;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,12 +21,18 @@ public class RtpCommand implements CommandExecutor {
 
   private final String playerFeedback;
   private final String safeSpotNotFound;
+  private final ArrayList<Material> unsafeBlocks;
+  private final int maxTries;
+  private final Boolean safeTeleport;
   private final Border border;
 
   public RtpCommand(RandomTeleport plugin) {
     super();
     playerFeedback = plugin.getMessage(Messages.PLAYER_FEEDBACK);
     safeSpotNotFound = plugin.getMessage(Messages.SAFE_SPOT_NOT_FOUND);
+    maxTries = (Integer) plugin.getProperty(Properties.MAX_TRIES);
+    safeTeleport = (Boolean) plugin.getProperty(Properties.SAFE_TELEPORT);
+    unsafeBlocks = (ArrayList<Material>) plugin.getProperty(Properties.UNSAFE_BLOCKS);
     border = plugin.getBorder();
   }
 
@@ -40,7 +49,20 @@ public class RtpCommand implements CommandExecutor {
     Player p = (Player) sender;
     Location oldLocation = p.getLocation();
     Location newLocation = border.getRandomLocation(p.getWorld());
-    double distance = newLocation.distance(oldLocation);
+
+    for (int i = 0; (i < maxTries) && safeTeleport; i++) {
+      Material topBlock = p.getWorld()
+          .getHighestBlockAt(newLocation)
+          .getLocation()
+          .subtract(0, 1, 0)
+          .getBlock()
+          .getType();
+      System.out.println("topBlock = " + topBlock);
+      if (!unsafeBlocks.contains(topBlock)) {
+        break;
+      }
+      newLocation = border.getRandomLocation(p.getWorld());
+    }
 
     p.teleport(newLocation);
     p.spigot().sendMessage(
@@ -49,10 +71,11 @@ public class RtpCommand implements CommandExecutor {
             parsePlayerFeedback(
                 oldLocation.getX(), oldLocation.getY(), oldLocation.getZ(),
                 newLocation.getX(), newLocation.getY(), newLocation.getZ(),
-                distance))
+                newLocation.distance(oldLocation)))
             .create());
     return true;
   }
+
 
   private String parsePlayerFeedback(
       double x_old, double y_old, double z_old,

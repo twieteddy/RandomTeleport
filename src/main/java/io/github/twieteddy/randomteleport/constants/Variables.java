@@ -1,6 +1,6 @@
-package io.github.twieteddy.randomteleport.dataclasses;
+package io.github.twieteddy.randomteleport.constants;
 
-public class Variables {
+public final class Variables {
 
   public static final String DISTANCE = "%_DISTANCE";
   public static final String OLD_X = "%_OLD_X";

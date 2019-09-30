@@ -5,4 +5,10 @@ safe_teleport: false
 max_tries: 10
 
 # can be "vanilla" or "plugin"
-border_mode: vanilla
+border_mode: "vanilla"
+
+# deny teleporting to the following blocks
+unsafe_blocks:
+  - "LAVA"
+  - "WATER"
+  - "STATIONARY_WATER"

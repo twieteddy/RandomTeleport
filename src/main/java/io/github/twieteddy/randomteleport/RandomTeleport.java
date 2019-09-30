@@ -5,14 +5,17 @@ import io.github.twieteddy.randomteleport.borders.Border;
 import io.github.twieteddy.randomteleport.borders.PluginBorder;
 import io.github.twieteddy.randomteleport.borders.VanillaBorder;
 import io.github.twieteddy.randomteleport.commands.RtpCommand;
-import io.github.twieteddy.randomteleport.dataclasses.Commands;
-import io.github.twieteddy.randomteleport.dataclasses.Configs;
-import io.github.twieteddy.randomteleport.dataclasses.Filenames;
-import io.github.twieteddy.randomteleport.dataclasses.Messages;
+import io.github.twieteddy.randomteleport.constants.Commands;
+import io.github.twieteddy.randomteleport.constants.Filenames;
+import io.github.twieteddy.randomteleport.constants.Messages;
+import io.github.twieteddy.randomteleport.constants.Properties;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,7 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class RandomTeleport extends JavaPlugin {
 
   private final Logger logger = Bukkit.getLogger();
-  private final HashMap<String, Object> options = new HashMap<>();
+  private final HashMap<String, Object> properties = new HashMap<>();
   private final HashMap<String, String> messages = new HashMap<>();
   private Border border;
 
@@ -35,35 +38,43 @@ public class RandomTeleport extends JavaPlugin {
   }
 
   private void loadConfigYml() {
-    File configFile = new File(getDataFolder(), Filenames.CONFIG);
+    File configFile = new File(getDataFolder(), Filenames.CONFIG_YAML);
 
     if (!configFile.exists()) {
-      saveResource(Filenames.CONFIG, false);
+      saveResource(Filenames.CONFIG_YAML, false);
     }
 
     YamlConfiguration configYaml = YamlConfiguration.loadConfiguration(configFile);
-    options.put(
-        Configs.SAFE_TELEPORT.toString(),
-        configYaml.get(Configs.SAFE_TELEPORT.toString()));
-    options.put(
-        Configs.BORDER_MODE,
-        configYaml.get(Configs.BORDER_MODE));
+    properties.put(Properties.SAFE_TELEPORT, configYaml.get(Properties.SAFE_TELEPORT));
+    properties.put(Properties.BORDER_MODE, configYaml.get(Properties.BORDER_MODE));
+    properties.put(Properties.MAX_TRIES, configYaml.get(Properties.MAX_TRIES));
+
+    log("UNSAFE BLOCKS:");
+    List<Material> unsafeBlocks = new ArrayList<>();
+    for (String materialName : configYaml.getStringList(Properties.UNSAFE_BLOCKS)) {
+      Material material = Material.matchMaterial(materialName);
+      if (material != null) {
+        unsafeBlocks.add(material);
+        log(materialName + " added");
+      } else {
+        log(materialName + " not found. Skipping");
+      }
+    }
+
+    properties.put(Properties.UNSAFE_BLOCKS, unsafeBlocks);
   }
 
   private void loadMessagesYml() {
-    File messagesFile = new File(getDataFolder(), Filenames.MESSAGES);
+    File messagesFile = new File(getDataFolder(), Filenames.MESSAGES_YAML);
 
     if (!messagesFile.exists()) {
-      saveResource(Filenames.MESSAGES, false);
+      saveResource(Filenames.MESSAGES_YAML, false);
     }
 
     YamlConfiguration messagesYaml = YamlConfiguration.loadConfiguration(messagesFile);
-    messages.put(
-        Messages.PLAYER_FEEDBACK,
-        messagesYaml.getString(Messages.PLAYER_FEEDBACK));
-    messages.put(
-        Messages.SAFE_SPOT_NOT_FOUND,
-        messagesYaml.getString(Messages.PLAYER_FEEDBACK));
+    messages.put(Messages.PLAYER_FEEDBACK, messagesYaml.getString(Messages.PLAYER_FEEDBACK));
+    messages
+        .put(Messages.SAFE_SPOT_NOT_FOUND, messagesYaml.getString(Messages.SAFE_SPOT_NOT_FOUND));
   }
 
   private void registerCommands() {
@@ -75,7 +86,7 @@ public class RandomTeleport extends JavaPlugin {
         .getPluginManager()
         .getPlugin("WorldBorder");
 
-    if (getOption(Configs.BORDER_MODE).equals("plugin") && worldBorderPlugin != null) {
+    if (getProperty(Properties.BORDER_MODE).equals("plugin") && worldBorderPlugin != null) {
       border = new PluginBorder(worldBorderPlugin);
     } else {
       border = new VanillaBorder();
@@ -83,8 +94,8 @@ public class RandomTeleport extends JavaPlugin {
   }
 
   @SuppressWarnings("WeakerAccess")
-  public Object getOption(String name) {
-    return options.getOrDefault(name, name);
+  public Object getProperty(String name) {
+    return properties.getOrDefault(name, name);
   }
 
   public String getMessage(String name) {
