@@ -13,9 +13,9 @@ public class VanillaBorder extends Border {
     WorldBorder vanillaBorder = world.getWorldBorder();
     Random random = new Random();
 
-    double size = vanillaBorder.getSize();
-    int x = random.nextInt((int) size / 2);
-    int z = random.nextInt((int) size / 2);
+    int size = (int) vanillaBorder.getSize();
+    int x = random.nextInt(size) - size / 2;
+    int z = random.nextInt(size) - size / 2;
 
     return world
         .getHighestBlockAt(vanillaBorder.getCenter().add(x, 0, z))
