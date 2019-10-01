@@ -7,7 +7,6 @@ import io.github.twieteddy.randomteleport.constants.Permissions;
 import io.github.twieteddy.randomteleport.constants.Properties;
 import io.github.twieteddy.randomteleport.constants.Variables;
 import java.util.ArrayList;
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Location;
@@ -21,6 +20,7 @@ public class RtpCommand implements CommandExecutor {
 
   private final String playerFeedback;
   private final String safeSpotNotFound;
+  private final String borderNotConfigured;
   private final ArrayList<Material> unsafeBlocks;
   private final int maxTries;
   private final Boolean safeTeleport;
@@ -30,6 +30,7 @@ public class RtpCommand implements CommandExecutor {
     super();
     playerFeedback = plugin.getMessage(Messages.PLAYER_FEEDBACK);
     safeSpotNotFound = plugin.getMessage(Messages.SAFE_SPOT_NOT_FOUND);
+    borderNotConfigured = plugin.getMessage(Messages.BORDER_NOT_CONFIGURED);
     maxTries = (Integer) plugin.getProperty(Properties.MAX_TRIES);
     safeTeleport = (Boolean) plugin.getProperty(Properties.SAFE_TELEPORT);
     unsafeBlocks = (ArrayList<Material>) plugin.getProperty(Properties.UNSAFE_BLOCKS);
@@ -50,21 +51,29 @@ public class RtpCommand implements CommandExecutor {
     Location oldLocation = p.getLocation();
     Location newLocation = border.getRandomLocation(p.getWorld());
 
-    for (int i = 0; (i < maxTries) && safeTeleport; i++) {
-      Material topBlock = p.getWorld()
-          .getHighestBlockAt(newLocation)
-          .getLocation()
-          .subtract(0, 1, 0)
-          .getBlock()
-          .getType();
-      System.out.println("topBlock = " + topBlock);
+    if (newLocation == null) {
+      p.spigot().sendMessage(
+          ChatMessageType.CHAT,
+          new ComponentBuilder(borderNotConfigured).create()
+      );
+      return true;
+    }
+
+    for (int i = 0; i < maxTries && safeTeleport; i++) {
+      Material topBlock = newLocation.subtract(0, 1, 0).getBlock().getType();
       if (!unsafeBlocks.contains(topBlock)) {
         break;
+      }
+      if (i == maxTries - 1) {
+        p.spigot().sendMessage(
+            ChatMessageType.CHAT,
+            new ComponentBuilder(safeSpotNotFound).create());
+        return true;
       }
       newLocation = border.getRandomLocation(p.getWorld());
     }
 
-    p.teleport(newLocation);
+    p.teleport(newLocation.add(0.5D, 1D, 0.5D));
     p.spigot().sendMessage(
         ChatMessageType.CHAT,
         new ComponentBuilder(
@@ -76,18 +85,17 @@ public class RtpCommand implements CommandExecutor {
     return true;
   }
 
-
   private String parsePlayerFeedback(
-      double x_old, double y_old, double z_old,
-      double x_new, double y_new, double z_new,
+      double xOld, double yOld, double zOld,
+      double xNew, double yNew, double zNew,
       double distance) {
-    return ChatColor.translateAlternateColorCodes('&', playerFeedback)
+    return playerFeedback
         .replace(Variables.DISTANCE, String.valueOf((int) distance))
-        .replace(Variables.OLD_X, String.valueOf((int) x_old))
-        .replace(Variables.OLD_Y, String.valueOf((int) y_old))
-        .replace(Variables.OLD_Z, String.valueOf((int) z_old))
-        .replace(Variables.NEW_X, String.valueOf((int) x_new))
-        .replace(Variables.NEW_Y, String.valueOf((int) y_new))
-        .replace(Variables.NEW_Z, String.valueOf((int) z_new));
+        .replace(Variables.OLD_X, String.valueOf((int) xOld))
+        .replace(Variables.OLD_Y, String.valueOf((int) yOld))
+        .replace(Variables.OLD_Z, String.valueOf((int) zOld))
+        .replace(Variables.NEW_X, String.valueOf((int) xNew))
+        .replace(Variables.NEW_Y, String.valueOf((int) yNew))
+        .replace(Variables.NEW_Z, String.valueOf((int) zNew));
   }
 }

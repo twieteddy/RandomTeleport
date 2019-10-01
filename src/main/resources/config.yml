@@ -1,5 +1,5 @@
 # search for a safe spot before teleporting
-safe_teleport: false
+safe_teleport: true
 
 # max tries to find a safe spot
 max_tries: 10
@@ -9,6 +9,21 @@ border_mode: "vanilla"
 
 # deny teleporting to the following blocks
 unsafe_blocks:
+  - "BEDROCK"
+  - "FIRE"
   - "LAVA"
+  - "MAGMA"
   - "WATER"
   - "STATIONARY_WATER"
+  - "SIGN"
+  - "SIGN_POST"
+  - "WALL_SIGN"
+  - "VINE"
+  - "STRING"
+  - "GOLD_PLATE"
+  - "IRON_PLATE"
+  - "STONE_PLATE"
+  - "WOOD_PLATE"
+  - "FENCE_GATE"
+  - "PORTAL"
+  - "ENDER_PORTAL"

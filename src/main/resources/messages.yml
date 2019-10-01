@@ -8,4 +8,5 @@
 # %_DISTANCE
 
 player_feedback: '&aDu wurdest %_DISTANCE Blöcke weit weg teleportiert'
-safe_spot_not_found: '&cEin sicherer Ort wurde leider nicht gefunden! :('
+safe_spot_not_found: '&cEin sicherer Ort konnte leider nicht gefunden werden :('
+border_not_configured: '&cDas WorldBorder-Plugin ist für diese Welt nicht konfiguriert'

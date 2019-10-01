@@ -18,16 +18,26 @@ public class PluginBorder extends Border {
   @SuppressWarnings("unused")
   @Override
   public Location getRandomLocation(World world) {
-    Random random = new Random();
     BorderData data = worldBorderPlugin.getWorldBorder(world.getName());
+    if (data == null) {
+      return null;
+    }
 
+    Random random = new Random();
     Location center = new Location(world, data.getX(), 0, data.getZ());
+    double x, z;
 
-    int x = random.nextInt(data.getRadiusX() * 2) - data.getRadiusX();
-    int z = random.nextInt(data.getRadiusZ() * 2) - data.getRadiusZ();
+    // round border if getShape() is null or false, else it's rectangular
+    if (data.getShape() != null && data.getShape() == true) {
+      double rnd = random.nextDouble();
+      double angle = rnd * 2 * Math.PI;
+      x = data.getRadiusX() * Math.sqrt(rnd) * Math.cos(angle);
+      z = data.getRadiusX() * Math.sqrt(rnd) * Math.sin(angle);
+    } else {
+      x = random.nextInt(data.getRadiusX() * 2) - data.getRadiusX();
+      z = random.nextInt(data.getRadiusZ() * 2) - data.getRadiusZ();
+    }
 
-    return world.getHighestBlockAt(center.add(x, 0, z))
-        .getLocation()
-        .add(0, 0.5D, 0);
+    return world.getHighestBlockAt(center.add((int) x, 0, (int) z)).getLocation();
   }
 }

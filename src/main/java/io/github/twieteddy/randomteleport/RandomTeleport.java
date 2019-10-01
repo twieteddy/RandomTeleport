@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -39,7 +40,6 @@ public class RandomTeleport extends JavaPlugin {
 
   private void loadConfigYml() {
     File configFile = new File(getDataFolder(), Filenames.CONFIG_YAML);
-
     if (!configFile.exists()) {
       saveResource(Filenames.CONFIG_YAML, false);
     }
@@ -55,9 +55,9 @@ public class RandomTeleport extends JavaPlugin {
       Material material = Material.matchMaterial(materialName);
       if (material != null) {
         unsafeBlocks.add(material);
-        log(materialName + " added");
+        log(" - " + materialName);
       } else {
-        log(materialName + " not found. Skipping");
+        log(" - " + materialName + " not found");
       }
     }
 
@@ -66,15 +66,20 @@ public class RandomTeleport extends JavaPlugin {
 
   private void loadMessagesYml() {
     File messagesFile = new File(getDataFolder(), Filenames.MESSAGES_YAML);
-
     if (!messagesFile.exists()) {
       saveResource(Filenames.MESSAGES_YAML, false);
     }
 
     YamlConfiguration messagesYaml = YamlConfiguration.loadConfiguration(messagesFile);
-    messages.put(Messages.PLAYER_FEEDBACK, messagesYaml.getString(Messages.PLAYER_FEEDBACK));
-    messages
-        .put(Messages.SAFE_SPOT_NOT_FOUND, messagesYaml.getString(Messages.SAFE_SPOT_NOT_FOUND));
+    messages.put(
+        Messages.PLAYER_FEEDBACK,
+        translateColor(messagesYaml.getString(Messages.PLAYER_FEEDBACK)));
+    messages.put(
+        Messages.SAFE_SPOT_NOT_FOUND,
+        translateColor(messagesYaml.getString(Messages.SAFE_SPOT_NOT_FOUND)));
+    messages.put(
+        Messages.BORDER_NOT_CONFIGURED,
+        translateColor(messagesYaml.getString(Messages.BORDER_NOT_CONFIGURED)));
   }
 
   private void registerCommands() {
@@ -93,6 +98,10 @@ public class RandomTeleport extends JavaPlugin {
     }
   }
 
+  private String translateColor(String text) {
+    return ChatColor.translateAlternateColorCodes('&', text);
+  }
+
   @SuppressWarnings("WeakerAccess")
   public Object getProperty(String name) {
     return properties.getOrDefault(name, name);
@@ -106,7 +115,7 @@ public class RandomTeleport extends JavaPlugin {
     return border;
   }
 
-  public void log(String message) {
+  private void log(String message) {
     logger.info(String.format("[%s] %s",
         getClass().getSimpleName(),
         message));
