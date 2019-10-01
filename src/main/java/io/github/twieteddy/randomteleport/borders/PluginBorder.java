@@ -28,7 +28,7 @@ public class PluginBorder extends Border {
     double x, z;
 
     // round border if getShape() is null or false, else it's rectangular
-    if (data.getShape() != null && data.getShape() == true) {
+    if (data.getShape() != null && data.getShape()) {
       double rnd = random.nextDouble();
       double angle = rnd * 2 * Math.PI;
       x = data.getRadiusX() * Math.sqrt(rnd) * Math.cos(angle);

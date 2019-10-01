@@ -1,18 +1,12 @@
 package io.github.twieteddy.randomteleport;
 
 import com.wimbli.WorldBorder.WorldBorder;
-import io.github.twieteddy.randomteleport.borders.Border;
 import io.github.twieteddy.randomteleport.borders.PluginBorder;
-import io.github.twieteddy.randomteleport.borders.VanillaBorder;
+import io.github.twieteddy.randomteleport.borders.Border;
 import io.github.twieteddy.randomteleport.commands.RtpCommand;
-import io.github.twieteddy.randomteleport.constants.Commands;
-import io.github.twieteddy.randomteleport.constants.Filenames;
-import io.github.twieteddy.randomteleport.constants.Messages;
-import io.github.twieteddy.randomteleport.constants.Properties;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -39,19 +33,19 @@ public class RandomTeleport extends JavaPlugin {
   }
 
   private void loadConfigYml() {
-    File configFile = new File(getDataFolder(), Filenames.CONFIG_YAML);
+    File configFile = new File(getDataFolder(), "config.yml");
     if (!configFile.exists()) {
-      saveResource(Filenames.CONFIG_YAML, false);
+      saveResource("config.yml", false);
     }
 
     YamlConfiguration configYaml = YamlConfiguration.loadConfiguration(configFile);
-    properties.put(Properties.SAFE_TELEPORT, configYaml.get(Properties.SAFE_TELEPORT));
-    properties.put(Properties.BORDER_MODE, configYaml.get(Properties.BORDER_MODE));
-    properties.put(Properties.MAX_TRIES, configYaml.get(Properties.MAX_TRIES));
+    properties.put("safe_teleport", configYaml.get("safe_teleport"));
+    properties.put("border_mode", configYaml.get("border_mode"));
+    properties.put("max_tries", configYaml.get("max_tries"));
 
     log("UNSAFE BLOCKS:");
-    List<Material> unsafeBlocks = new ArrayList<>();
-    for (String materialName : configYaml.getStringList(Properties.UNSAFE_BLOCKS)) {
+    ArrayList<Material> unsafeBlocks = new ArrayList<>();
+    for (String materialName : configYaml.getStringList("unsafe_blocks")) {
       Material material = Material.matchMaterial(materialName);
       if (material != null) {
         unsafeBlocks.add(material);
@@ -60,30 +54,26 @@ public class RandomTeleport extends JavaPlugin {
         log(" - " + materialName + " not found");
       }
     }
-
-    properties.put(Properties.UNSAFE_BLOCKS, unsafeBlocks);
+    properties.put("unsafe_blocks", unsafeBlocks);
   }
 
   private void loadMessagesYml() {
-    File messagesFile = new File(getDataFolder(), Filenames.MESSAGES_YAML);
+    File messagesFile = new File(getDataFolder(), "messages.yml");
     if (!messagesFile.exists()) {
-      saveResource(Filenames.MESSAGES_YAML, false);
+      saveResource("messages.yml", false);
     }
 
     YamlConfiguration messagesYaml = YamlConfiguration.loadConfiguration(messagesFile);
-    messages.put(
-        Messages.PLAYER_FEEDBACK,
-        translateColor(messagesYaml.getString(Messages.PLAYER_FEEDBACK)));
-    messages.put(
-        Messages.SAFE_SPOT_NOT_FOUND,
-        translateColor(messagesYaml.getString(Messages.SAFE_SPOT_NOT_FOUND)));
-    messages.put(
-        Messages.BORDER_NOT_CONFIGURED,
-        translateColor(messagesYaml.getString(Messages.BORDER_NOT_CONFIGURED)));
+    messages.put("player_feedback",
+        translateColor(messagesYaml.getString("player_feedback")));
+    messages.put("safe_spot_not_found",
+        translateColor(messagesYaml.getString("safe_spot_not_found")));
+    messages.put("border_not_configured",
+        translateColor(messagesYaml.getString("border_not_configured")));
   }
 
   private void registerCommands() {
-    getCommand(Commands.RTP).setExecutor(new RtpCommand(this));
+    getCommand("rtp").setExecutor(new RtpCommand(this));
   }
 
   private void setupBorder() {
@@ -91,18 +81,17 @@ public class RandomTeleport extends JavaPlugin {
         .getPluginManager()
         .getPlugin("WorldBorder");
 
-    if (getProperty(Properties.BORDER_MODE).equals("plugin") && worldBorderPlugin != null) {
+    if (getProperty("border_mode").equals("plugin") && worldBorderPlugin != null) {
       border = new PluginBorder(worldBorderPlugin);
     } else {
-      border = new VanillaBorder();
+      border = new Border();
     }
   }
 
-  private String translateColor(String text) {
-    return ChatColor.translateAlternateColorCodes('&', text);
+  private String translateColor(String message) {
+    return ChatColor.translateAlternateColorCodes('&', message);
   }
 
-  @SuppressWarnings("WeakerAccess")
   public Object getProperty(String name) {
     return properties.getOrDefault(name, name);
   }
@@ -116,8 +105,6 @@ public class RandomTeleport extends JavaPlugin {
   }
 
   private void log(String message) {
-    logger.info(String.format("[%s] %s",
-        getClass().getSimpleName(),
-        message));
+    logger.info(String.format("[%s] %s", getClass().getSimpleName(), message));
   }
 }

@@ -2,13 +2,7 @@ package io.github.twieteddy.randomteleport.commands;
 
 import io.github.twieteddy.randomteleport.RandomTeleport;
 import io.github.twieteddy.randomteleport.borders.Border;
-import io.github.twieteddy.randomteleport.constants.Messages;
-import io.github.twieteddy.randomteleport.constants.Permissions;
-import io.github.twieteddy.randomteleport.constants.Properties;
-import io.github.twieteddy.randomteleport.constants.Variables;
 import java.util.ArrayList;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -27,13 +21,13 @@ public class RtpCommand implements CommandExecutor {
   private final Border border;
 
   public RtpCommand(RandomTeleport plugin) {
-    super();
-    playerFeedback = plugin.getMessage(Messages.PLAYER_FEEDBACK);
-    safeSpotNotFound = plugin.getMessage(Messages.SAFE_SPOT_NOT_FOUND);
-    borderNotConfigured = plugin.getMessage(Messages.BORDER_NOT_CONFIGURED);
-    maxTries = (Integer) plugin.getProperty(Properties.MAX_TRIES);
-    safeTeleport = (Boolean) plugin.getProperty(Properties.SAFE_TELEPORT);
-    unsafeBlocks = (ArrayList<Material>) plugin.getProperty(Properties.UNSAFE_BLOCKS);
+    playerFeedback = plugin.getMessage("player_feedback");
+    safeSpotNotFound = plugin.getMessage("safe_spot_not_found");
+    borderNotConfigured = plugin.getMessage("border_not_configured");
+    maxTries = (Integer) plugin.getProperty("max_tries");
+    safeTeleport = (Boolean) plugin.getProperty("safe_teleport");
+    //noinspection unchecked
+    unsafeBlocks = (ArrayList<Material>) plugin.getProperty("unsafe_blocks");
     border = plugin.getBorder();
   }
 
@@ -43,7 +37,7 @@ public class RtpCommand implements CommandExecutor {
       return true;
     }
 
-    if (!sender.hasPermission(Permissions.RTP)) {
+    if (!sender.hasPermission("randomteleport.command.rtp")) {
       return true;
     }
 
@@ -69,25 +63,16 @@ public class RtpCommand implements CommandExecutor {
     }
 
     p.teleport(newLocation.add(0.5D, 1D, 0.5D));
-    p.sendMessage(
-        parsePlayerFeedback(
-            oldLocation.getX(), oldLocation.getY(), oldLocation.getZ(),
-            newLocation.getX(), newLocation.getY(), newLocation.getZ(),
-            newLocation.distance(oldLocation)));
+    p.sendMessage(playerFeedback
+        .replace("%_DISTANCE", String.valueOf((int) newLocation.distance(oldLocation)))
+        .replace("%_OLD_X", String.valueOf((int) oldLocation.getX()))
+        .replace("%_OLD_Y", String.valueOf((int) oldLocation.getY()))
+        .replace("%_OLD_Z", String.valueOf((int) oldLocation.getZ()))
+        .replace("%_NEW_X", String.valueOf((int) newLocation.getX()))
+        .replace("%_NEW_Y", String.valueOf((int) newLocation.getY()))
+        .replace("%_NEW_Z", String.valueOf((int) newLocation.getZ())));
     return true;
   }
 
-  private String parsePlayerFeedback(
-      double xOld, double yOld, double zOld,
-      double xNew, double yNew, double zNew,
-      double distance) {
-    return playerFeedback
-        .replace(Variables.DISTANCE, String.valueOf((int) distance))
-        .replace(Variables.OLD_X, String.valueOf((int) xOld))
-        .replace(Variables.OLD_Y, String.valueOf((int) yOld))
-        .replace(Variables.OLD_Z, String.valueOf((int) zOld))
-        .replace(Variables.NEW_X, String.valueOf((int) xNew))
-        .replace(Variables.NEW_Y, String.valueOf((int) yNew))
-        .replace(Variables.NEW_Z, String.valueOf((int) zNew));
-  }
+
 }
