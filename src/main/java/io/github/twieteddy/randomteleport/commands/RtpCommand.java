@@ -52,10 +52,7 @@ public class RtpCommand implements CommandExecutor {
     Location newLocation = border.getRandomLocation(p.getWorld());
 
     if (newLocation == null) {
-      p.spigot().sendMessage(
-          ChatMessageType.CHAT,
-          new ComponentBuilder(borderNotConfigured).create()
-      );
+       p.sendMessage(borderNotConfigured);
       return true;
     }
 
@@ -65,23 +62,18 @@ public class RtpCommand implements CommandExecutor {
         break;
       }
       if (i == maxTries - 1) {
-        p.spigot().sendMessage(
-            ChatMessageType.CHAT,
-            new ComponentBuilder(safeSpotNotFound).create());
+        p.sendMessage(safeSpotNotFound);
         return true;
       }
       newLocation = border.getRandomLocation(p.getWorld());
     }
 
     p.teleport(newLocation.add(0.5D, 1D, 0.5D));
-    p.spigot().sendMessage(
-        ChatMessageType.CHAT,
-        new ComponentBuilder(
-            parsePlayerFeedback(
-                oldLocation.getX(), oldLocation.getY(), oldLocation.getZ(),
-                newLocation.getX(), newLocation.getY(), newLocation.getZ(),
-                newLocation.distance(oldLocation)))
-            .create());
+    p.sendMessage(
+        parsePlayerFeedback(
+            oldLocation.getX(), oldLocation.getY(), oldLocation.getZ(),
+            newLocation.getX(), newLocation.getY(), newLocation.getZ(),
+            newLocation.distance(oldLocation)));
     return true;
   }
 
