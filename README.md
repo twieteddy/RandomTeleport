@@ -10,7 +10,7 @@ Brettflan's [WorldBorder](https://dev.bukkit.org/projects/worldborder) plugin, b
 ### Permissions
 | Permission                 | Description   | Default |
 | -------------------------- | ------------- | :-----: |
-| randomteleport.command.rtp | Grant access to random teleports  | op |
+| randomteleport.command.rtp | Grants access to random teleports  | op |
 
 ### Settings
 * **safe_teleport:** *<true|false>* If turned on, deny teleports on blocks specified in the unsafe blocks list

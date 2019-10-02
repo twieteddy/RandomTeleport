@@ -2,10 +2,9 @@ package io.github.twieteddy.randomteleport.borders;
 
 import com.wimbli.WorldBorder.BorderData;
 import com.wimbli.WorldBorder.WorldBorder;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Location;
 import org.bukkit.World;
-
 
 public class PluginBorder extends Border {
 
@@ -23,20 +22,18 @@ public class PluginBorder extends Border {
       return null;
     }
 
-    Random random = new Random();
+    ThreadLocalRandom random = ThreadLocalRandom.current();
     Location center = new Location(world, data.getX(), 0, data.getZ());
-    double x, z;
+    double x, z, d;
 
-    // round border if getShape() is null or false, else it's rectangular
-    if (data.getShape() != null && data.getShape()) {
-      double rnd = random.nextDouble();
-      double angle = rnd * 2 * Math.PI;
-      x = data.getRadiusX() * Math.sqrt(rnd) * Math.cos(angle);
-      z = data.getRadiusX() * Math.sqrt(rnd) * Math.sin(angle);
-    } else {
-      x = random.nextInt(data.getRadiusX() * 2) - data.getRadiusX();
-      z = random.nextInt(data.getRadiusZ() * 2) - data.getRadiusZ();
-    }
+    do {
+      x = random.nextDouble(-1 * data.getRadiusX(), data.getRadiusX());
+      z = random.nextDouble(-1 * data.getRadiusZ(), data.getRadiusZ());
+      d =
+          Math.sqrt(
+              Math.pow((2 * x) / (data.getRadiusX() * 0.5D), 2)
+                  + Math.pow((2 * z) / (data.getRadiusZ() * 0.5D), 2));
+    } while (data.getShape() != null && data.getShape() && d > 1);
 
     return world.getHighestBlockAt(center.add((int) x, 0, (int) z)).getLocation();
   }

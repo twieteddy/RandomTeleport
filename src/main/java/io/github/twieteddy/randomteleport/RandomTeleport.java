@@ -1,8 +1,8 @@
 package io.github.twieteddy.randomteleport;
 
 import com.wimbli.WorldBorder.WorldBorder;
-import io.github.twieteddy.randomteleport.borders.PluginBorder;
 import io.github.twieteddy.randomteleport.borders.Border;
+import io.github.twieteddy.randomteleport.borders.PluginBorder;
 import io.github.twieteddy.randomteleport.commands.RtpCommand;
 import java.io.File;
 import java.util.ArrayList;
@@ -64,12 +64,12 @@ public class RandomTeleport extends JavaPlugin {
     }
 
     YamlConfiguration messagesYaml = YamlConfiguration.loadConfiguration(messagesFile);
-    messages.put("player_feedback",
-        translateColor(messagesYaml.getString("player_feedback")));
-    messages.put("safe_spot_not_found",
-        translateColor(messagesYaml.getString("safe_spot_not_found")));
-    messages.put("border_not_configured",
-        translateColor(messagesYaml.getString("border_not_configured")));
+    messages.put(
+        "player_feedback", translateColor(messagesYaml.getString("player_feedback")));
+    messages.put(
+        "safe_spot_not_found", translateColor(messagesYaml.getString("safe_spot_not_found")));
+    messages.put(
+        "border_not_configured", translateColor(messagesYaml.getString("border_not_configured")));
   }
 
   private void registerCommands() {
@@ -77,9 +77,8 @@ public class RandomTeleport extends JavaPlugin {
   }
 
   private void setupBorder() {
-    WorldBorder worldBorderPlugin = (WorldBorder) getServer()
-        .getPluginManager()
-        .getPlugin("WorldBorder");
+    WorldBorder worldBorderPlugin =
+        (WorldBorder) getServer().getPluginManager().getPlugin("WorldBorder");
 
     if (getProperty("border_mode").equals("plugin") && worldBorderPlugin != null) {
       border = new PluginBorder(worldBorderPlugin);

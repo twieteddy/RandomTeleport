@@ -46,7 +46,7 @@ public class RtpCommand implements CommandExecutor {
     Location newLocation = border.getRandomLocation(p.getWorld());
 
     if (newLocation == null) {
-       p.sendMessage(borderNotConfigured);
+      p.sendMessage(borderNotConfigured);
       return true;
     }
 
@@ -63,16 +63,15 @@ public class RtpCommand implements CommandExecutor {
     }
 
     p.teleport(newLocation.add(0.5D, 1D, 0.5D));
-    p.sendMessage(playerFeedback
-        .replace("%_DISTANCE", String.valueOf((int) newLocation.distance(oldLocation)))
-        .replace("%_OLD_X", String.valueOf((int) oldLocation.getX()))
-        .replace("%_OLD_Y", String.valueOf((int) oldLocation.getY()))
-        .replace("%_OLD_Z", String.valueOf((int) oldLocation.getZ()))
-        .replace("%_NEW_X", String.valueOf((int) newLocation.getX()))
-        .replace("%_NEW_Y", String.valueOf((int) newLocation.getY()))
-        .replace("%_NEW_Z", String.valueOf((int) newLocation.getZ())));
+    p.sendMessage(
+        playerFeedback
+            .replace("%_DISTANCE", String.valueOf((int) newLocation.distance(oldLocation)))
+            .replace("%_OLD_X", String.valueOf((int) oldLocation.getX()))
+            .replace("%_OLD_Y", String.valueOf((int) oldLocation.getY()))
+            .replace("%_OLD_Z", String.valueOf((int) oldLocation.getZ()))
+            .replace("%_NEW_X", String.valueOf((int) newLocation.getX()))
+            .replace("%_NEW_Y", String.valueOf((int) newLocation.getY()))
+            .replace("%_NEW_Z", String.valueOf((int) newLocation.getZ())));
     return true;
   }
-
-
 }
