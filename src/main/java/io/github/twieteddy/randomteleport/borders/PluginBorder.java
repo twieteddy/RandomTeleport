@@ -31,8 +31,8 @@ public class PluginBorder extends Border {
       z = random.nextDouble(-1 * data.getRadiusZ(), data.getRadiusZ());
       d =
           Math.sqrt(
-              Math.pow((2 * x) / (data.getRadiusX() * 0.5D), 2)
-                  + Math.pow((2 * z) / (data.getRadiusZ() * 0.5D), 2));
+              Math.pow((2 * x) / (data.getRadiusX() * 2), 2)
+                  + Math.pow((2 * z) / (data.getRadiusZ() * 2), 2));
     } while (data.getShape() != null && data.getShape() && d > 1);
 
     return world.getHighestBlockAt(center.add((int) x, 0, (int) z)).getLocation();
