@@ -14,7 +14,6 @@ public class PluginBorder extends Border {
     this.worldBorderPlugin = worldBorderPlugin;
   }
 
-  @SuppressWarnings("unused")
   @Override
   public Location getRandomLocation(World world) {
     BorderData data = worldBorderPlugin.getWorldBorder(world.getName());
