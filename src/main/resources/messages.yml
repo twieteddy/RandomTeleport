@@ -6,7 +6,10 @@
 # %_NEW_Y
 # %_NEW_Z
 # %_DISTANCE
+# %_COOLDOWN
+# %_COOLDOWN_LEFT
 
 player_feedback: '&aDu wurdest %_DISTANCE Blöcke weit weg teleportiert'
 safe_spot_not_found: '&cEin sicherer Ort konnte leider nicht gefunden werden :('
 border_not_configured: '&cDas WorldBorder-Plugin ist für diese Welt nicht konfiguriert'
+cooldown: '&cDu darfst dich nur alle %_COOLDOWN Sekunden teleportieren. Versuche es in %_COOLDOWN_LEFT Sekunden noch einmal'

@@ -7,6 +7,8 @@ max_tries: 10
 # can be "vanilla" or "plugin"
 border_mode: "vanilla"
 
+cooldown: 10
+
 # deny teleporting to the following blocks
 unsafe_blocks:
   - "BEDROCK"

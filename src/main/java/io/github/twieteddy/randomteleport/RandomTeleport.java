@@ -42,6 +42,7 @@ public class RandomTeleport extends JavaPlugin {
     properties.put("safe_teleport", configYaml.get("safe_teleport"));
     properties.put("border_mode", configYaml.get("border_mode"));
     properties.put("max_tries", configYaml.get("max_tries"));
+    properties.put("cooldown", configYaml.get("cooldown"));
 
     log("UNSAFE BLOCKS:");
     ArrayList<Material> unsafeBlocks = new ArrayList<>();
@@ -70,6 +71,8 @@ public class RandomTeleport extends JavaPlugin {
         "safe_spot_not_found", translateColor(messagesYaml.getString("safe_spot_not_found")));
     messages.put(
         "border_not_configured", translateColor(messagesYaml.getString("border_not_configured")));
+    messages.put(
+        "cooldown", translateColor(messagesYaml.getString("cooldown")));
   }
 
   private void registerCommands() {
