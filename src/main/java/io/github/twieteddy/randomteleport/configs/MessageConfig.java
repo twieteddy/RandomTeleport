@@ -1,5 +1,6 @@
-package io.github.twieteddy.randomteleport;
+package io.github.twieteddy.randomteleport.configs;
 
+import io.github.twieteddy.randomteleport.RandomTeleportPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -8,7 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-public class Messaging {
+public class MessageConfig {
   private final HashMap<String, String> messages;
   private static final String CONFIG_FILENAME = "messages.yml";
 
@@ -30,7 +31,7 @@ public class Messaging {
   private static final String MSG_COOLDOWN = "&cDu darfst dich nur alle $cooldown Sekunden "
       + "teleportieren. Versuche es in $timeLeft Sekunden noch einmal";
 
-  public Messaging(RandomTeleport plugin) {
+  public MessageConfig(RandomTeleportPlugin plugin) {
     File file = new File(plugin.getDataFolder(), CONFIG_FILENAME);
     YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
     messages = new HashMap<>();

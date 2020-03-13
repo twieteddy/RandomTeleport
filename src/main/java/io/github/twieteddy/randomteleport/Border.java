@@ -2,6 +2,7 @@ package io.github.twieteddy.randomteleport;
 
 import com.wimbli.WorldBorder.BorderData;
 import com.wimbli.WorldBorder.WorldBorder;
+import io.github.twieteddy.randomteleport.configs.GeneralConfig;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Location;
@@ -9,11 +10,11 @@ import org.bukkit.World;
 
 public class Border {
 
-  private final Config config;
+  private final GeneralConfig generalConfig;
   private final WorldBorder worldBorderPlugin;
 
-  public Border(Config config, WorldBorder plugin) {
-    this.config = config;
+  public Border(GeneralConfig generalConfig, WorldBorder plugin) {
+    this.generalConfig = generalConfig;
     this.worldBorderPlugin = plugin;
   }
 
@@ -47,8 +48,8 @@ public class Border {
     int size = (int) vanillaBorder.getSize();
 
     // Limit border size to configured value
-    if (size > config.getMaxVanillaRadius() * 2) {
-      size = config.getMaxVanillaRadius() * 2;
+    if (size > generalConfig.getMaxVanillaRadius() * 2) {
+      size = generalConfig.getMaxVanillaRadius() * 2;
     }
 
     int x = random.nextInt(size) - size / 2;
