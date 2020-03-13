@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Statistic;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -38,7 +39,7 @@ public class RtpCommand implements CommandExecutor {
 
     // Calculate cooldown
     Long lastCommandUsage = cooldowns.getOrDefault(p.getUniqueId(), Long.valueOf("0"));
-    if (!p.hasPermission("randomteleport.command.rtp.cooldown.bypass")) {
+    if (!p.hasPermission("randomteleport.cooldown.bypass")) {
       long nextUsage = lastCommandUsage + config.getCooldown() * 1000;
       if (nextUsage > System.currentTimeMillis()) {
         long diff = nextUsage - System.currentTimeMillis();

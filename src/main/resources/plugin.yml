@@ -1,19 +1,22 @@
-name: RandomTeleport
-version: "2.0"
-api-version: "1.13"
-description: "RandomTeleport"
-
-author: Teddy
-authors: []
-website: https://twieteddy.github.io
-
-main: io.github.twieteddy.randomteleport.RandomTeleport
+# Plugin info
+api-version: "1.12"
+name: "RandomTeleport"
+description: "${project.description}"
+version: "${project.version}"
+main: "io.github.twieteddy.randomteleport.RandomTeleport"
 database: false
 depend: []
-softdepend: [WorldBorder]
+softdepend: ["WorldBorder"]
+
+# Authors
+author: "Teddy"
+authors: []
+website: "https://twieteddy.github.io"
 
 permissions:
   randomteleport.command.rtp:
+    default: op
+  randomteleport.cooldown.bypass:
     default: op
 
 commands:
