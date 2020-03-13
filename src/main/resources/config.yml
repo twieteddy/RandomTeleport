@@ -1,0 +1,22 @@
+safe-teleport: true
+max-tries: 10
+max-vanilla-radius: 4096
+unsafe-blocks:
+  - "BEDROCK"
+  - "FIRE"
+  - "LAVA"
+  - "MAGMA"
+  - "WATER"
+  - "STATIONARY_WATER"
+  - "SIGN"
+  - "SIGN_POST"
+  - "WALL_SIGN"
+  - "VINE"
+  - "STRING"
+  - "GOLD_PLATE"
+  - "IRON_PLATE"
+  - "STONE_PLATE"
+  - "WOOD_PLATE"
+  - "FENCE_GATE"
+  - "PORTAL"
+  - "ENDER_PORTAL"

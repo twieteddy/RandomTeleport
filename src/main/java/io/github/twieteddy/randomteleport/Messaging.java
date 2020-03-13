@@ -8,7 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-class Messaging {
+public class Messaging {
   private final HashMap<String, String> messages;
   private static final String CONFIG_FILENAME = "messages.yml";
 
@@ -30,7 +30,7 @@ class Messaging {
   private static final String MSG_COOLDOWN = "&cDu darfst dich nur alle $cooldown Sekunden "
       + "teleportieren. Versuche es in $timeLeft Sekunden noch einmal";
 
-  Messaging(RandomTeleport plugin) {
+  public Messaging(RandomTeleport plugin) {
     File file = new File(plugin.getDataFolder(), CONFIG_FILENAME);
     YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
     messages = new HashMap<>();
@@ -56,18 +56,18 @@ class Messaging {
     return ChatColor.translateAlternateColorCodes('&', text);
   }
 
-  void sendTeleportSuccessMessage(Player player, int distanceTeleported) {
+  public void sendTeleportSuccessMessage(Player player, int distanceTeleported) {
     String message = getMessage(KEY_TELEPORT_SUCCESS)
       .replace(VAR_DISTANCE, String.valueOf(distanceTeleported));
     player.sendMessage(message);
   }
 
-  void sendSafespotNotFoundMessage(Player player) {
+  public void sendSafespotNotFoundMessage(Player player) {
     String message = getMessage(KEY_SAFESPOT_NOT_FOUND);
     player.sendMessage(message);
   }
 
-  void sendCooldownMessage(Player player, int cooldown, long timeLeft) {
+  public void sendCooldownMessage(Player player, int cooldown, long timeLeft) {
     String message = getMessage(KEY_COOLDOWN)
         .replace(VAR_COOLDOWN, String.valueOf(cooldown))
         .replace(VAR_TIME_LEFT, String.format("%.3f", (float) timeLeft / 1000));

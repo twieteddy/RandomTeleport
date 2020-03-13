@@ -1,10 +1,12 @@
-package io.github.twieteddy.randomteleport;
+package io.github.twieteddy.randomteleport.commands;
 
+import io.github.twieteddy.randomteleport.Border;
+import io.github.twieteddy.randomteleport.Config;
+import io.github.twieteddy.randomteleport.Messaging;
 import java.util.HashMap;
 import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Statistic;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -15,7 +17,7 @@ public class RtpCommand implements CommandExecutor {
   private final Border border;
   private final HashMap<UUID, Long> cooldowns;
 
-  RtpCommand(Config config, Messaging messaging, Border border) {
+  public RtpCommand(Config config, Messaging messaging, Border border) {
     this.config = config;
     this.messaging = messaging;
     this.border = border;

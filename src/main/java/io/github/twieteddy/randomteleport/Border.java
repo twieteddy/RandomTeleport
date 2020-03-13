@@ -7,17 +7,17 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-class Border {
+public class Border {
 
   private final Config config;
   private final WorldBorder worldBorderPlugin;
 
-  Border(Config config, WorldBorder plugin) {
+  public Border(Config config, WorldBorder plugin) {
     this.config = config;
     this.worldBorderPlugin = plugin;
   }
 
-  Location getRandomLocation(World world) {
+  public Location getRandomLocation(World world) {
     if (worldBorderPlugin != null) {
       BorderData borderData = worldBorderPlugin.getWorldBorder(world.getName());
       if (borderData != null) {
@@ -29,7 +29,6 @@ class Border {
 
   private Location getRandomLocationFromPlugin(World world, BorderData data) {
     ThreadLocalRandom random = ThreadLocalRandom.current();
-    Location borderCenter = new Location(world, data.getX(), 0,  data.getZ());
 
     double distanceX = data.getRadiusX() * Math.sqrt(random.nextDouble());
     double distanceZ = data.getRadiusZ() * Math.sqrt(random.nextDouble());
