@@ -1,4 +1,5 @@
 safe-teleport: true
+cooldown: 10
 max-tries: 10
 max-vanilla-radius: 4096
 unsafe-blocks:
@@ -20,3 +21,7 @@ unsafe-blocks:
   - "FENCE_GATE"
   - "PORTAL"
   - "ENDER_PORTAL"
+messages:
+  teleport-success: "&aDu wurdest $distanceTeleported Blöcke weit weg teleportiert"
+  safespot-not-found: "&cEin sicherer Ort konnte leider nicht gefunden werden :("
+  cooldown: "&cDu darfst dich nur alle $cooldown Sekunden teleportieren. Versuche es in $timeLeft Sekunden noch einmal"

@@ -2,19 +2,18 @@ package io.github.twieteddy.randomteleport;
 
 import com.wimbli.WorldBorder.BorderData;
 import com.wimbli.WorldBorder.WorldBorder;
-import io.github.twieteddy.randomteleport.configs.GeneralConfig;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Location;
 import org.bukkit.World;
 
 public class Border {
 
-  private final GeneralConfig generalConfig;
+  private final Config config;
   private final WorldBorder worldBorderPlugin;
+  private final ThreadLocalRandom random = ThreadLocalRandom.current();
 
-  public Border(GeneralConfig generalConfig, WorldBorder plugin) {
-    this.generalConfig = generalConfig;
+  public Border(Config config, WorldBorder plugin) {
+    this.config = config;
     this.worldBorderPlugin = plugin;
   }
 
@@ -29,7 +28,7 @@ public class Border {
   }
 
   private Location getRandomLocationFromPlugin(World world, BorderData data) {
-    ThreadLocalRandom random = ThreadLocalRandom.current();
+
 
     double distanceX = data.getRadiusX() * Math.sqrt(random.nextDouble());
     double distanceZ = data.getRadiusZ() * Math.sqrt(random.nextDouble());
@@ -43,13 +42,12 @@ public class Border {
 
   private Location getRandomLocationFromVanilla(World world) {
     org.bukkit.WorldBorder vanillaBorder = world.getWorldBorder();
-    Random random = new Random();
 
     int size = (int) vanillaBorder.getSize();
 
     // Limit border size to configured value
-    if (size > generalConfig.getMaxVanillaRadius() * 2) {
-      size = generalConfig.getMaxVanillaRadius() * 2;
+    if (size > config.getMaxVanillaRadius() * 2) {
+      size = config.getMaxVanillaRadius() * 2;
     }
 
     int x = random.nextInt(size) - size / 2;
