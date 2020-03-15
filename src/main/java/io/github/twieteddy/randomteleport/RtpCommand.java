@@ -58,8 +58,7 @@ public class RtpCommand implements CommandExecutor {
         }
       }
       player.teleport(newLocation.add(0.5D, 1D, 0.5D));
-      player.sendMessage(
-          config.getTeleportSuccessMessage((int) newLocation.distance(oldLocation)));
+      player.sendMessage(config.getTeleportSuccessMessage((int) newLocation.distance(oldLocation)));
       return true;
     }
 
