@@ -1,5 +1,5 @@
 # Plugin info
-api-version: "1.12"
+api-version: "1.13"
 name: "RandomTeleport"
 description: "${project.description}"
 version: "${project.version}"
