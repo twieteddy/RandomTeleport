@@ -28,8 +28,6 @@ public class Border {
   }
 
   private Location getRandomLocationFromPlugin(World world, BorderData data) {
-
-
     double distanceX = data.getRadiusX() * Math.sqrt(random.nextDouble());
     double distanceZ = data.getRadiusZ() * Math.sqrt(random.nextDouble());
     double angle = random.nextDouble() * 2 * Math.PI;
@@ -42,7 +40,6 @@ public class Border {
 
   private Location getRandomLocationFromVanilla(World world) {
     org.bukkit.WorldBorder vanillaBorder = world.getWorldBorder();
-
     int size = (int) vanillaBorder.getSize();
 
     // Limit border size to configured value
