@@ -35,7 +35,7 @@ public class Border {
     int x = (int) (data.getX() + distanceX * Math.cos(angle));
     int z = (int) (data.getZ() + distanceZ * Math.sin(angle));
 
-    return world.getHighestBlockAt(x, z).getLocation().add(0d, 1d, 0d);
+    return world.getHighestBlockAt(x, z).getLocation();
   }
 
   private Location getRandomLocationFromVanilla(World world) {
@@ -52,7 +52,6 @@ public class Border {
 
     return world
         .getHighestBlockAt(vanillaBorder.getCenter().add(x, 0, z))
-        .getLocation()
-        .add(0d, 1d, 0d);
+        .getLocation();
   }
 }
