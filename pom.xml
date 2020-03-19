@@ -22,7 +22,11 @@
     </repository>
     <repository>
       <id>bungeecord-repo</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </repository>
+    <repository>
+      <id>joestr-repo</id>
+      <url>https://mvn-repo.joestr.xyz/repository/worldborder-repo/</url>
     </repository>
   </repositories>
 
@@ -52,6 +56,11 @@
       <version>1.12-SNAPSHOT</version>
       <type>javadoc</type>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.wimbli</groupId>
+      <artifactId>WorldBorder</artifactId>
+      <version>1.9.10-beta</version>
     </dependency>
     <dependency>
       <groupId>org.jetbrains</groupId>
