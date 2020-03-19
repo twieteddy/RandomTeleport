@@ -52,12 +52,12 @@ public class RtpCommand implements CommandExecutor {
     for (int i = 0; i < config.getMaxTries(); i++) {
       Location newLocation = border.getRandomLocation(player.getWorld());
       if (config.isSafeTeleportEnabled()) {
-        Material topBlock = newLocation.subtract(0, 1, 0).getBlock().getType();
+        Material topBlock = newLocation.subtract(0d, 1d, 0d).getBlock().getType();
         if (config.getUnsafeBlocks().contains(topBlock)) {
           continue;
         }
       }
-      player.teleport(newLocation.add(0.5D, 1D, 0.5D));
+      player.teleport(newLocation.add(0.5d, 1d, 0.5d));
       player.sendMessage(config.getTeleportSuccessMessage((int) newLocation.distance(oldLocation)));
       return true;
     }
