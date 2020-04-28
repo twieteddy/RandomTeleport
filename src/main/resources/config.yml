@@ -22,8 +22,6 @@ unsafe-blocks:
   - "PORTAL"
   - "ENDER_PORTAL"
 
-rtp-onjoin-worlds:
-  - "farmwelt"
 messages:
   teleport-success: "&aDu wurdest $distanceTeleported Blöcke weit weg teleportiert"
   safespot-not-found: "&cEin sicherer Ort konnte leider nicht gefunden werden :("
