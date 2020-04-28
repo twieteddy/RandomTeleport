@@ -3,18 +3,20 @@ package io.github.twieteddy.randomteleport;
 import com.wimbli.WorldBorder.BorderData;
 import com.wimbli.WorldBorder.WorldBorder;
 import java.util.concurrent.ThreadLocalRandom;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
 public class Border {
 
-  private final Config config;
   private final WorldBorder worldBorderPlugin;
   private final ThreadLocalRandom random = ThreadLocalRandom.current();
+  private final int maxVanillaRadius;
 
-  public Border(Config config, WorldBorder plugin) {
-    this.config = config;
-    this.worldBorderPlugin = plugin;
+  public Border(int maxVanillaRadius) {
+    this.maxVanillaRadius = maxVanillaRadius;
+    this.worldBorderPlugin = (WorldBorder) Bukkit.getServer().getPluginManager()
+        .getPlugin("WorldBorder");
   }
 
   public Location getRandomLocation(World world) {
@@ -24,6 +26,7 @@ public class Border {
         return getRandomLocationFromPlugin(world, borderData);
       }
     }
+
     return getRandomLocationFromVanilla(world);
   }
 
@@ -43,15 +46,14 @@ public class Border {
     int size = (int) vanillaBorder.getSize();
 
     // Limit border size to configured value
-    if (size > config.getMaxVanillaRadius() * 2) {
-      size = config.getMaxVanillaRadius() * 2;
+    if (size > maxVanillaRadius * 2) {
+      size = maxVanillaRadius * 2;
     }
 
     int x = random.nextInt(size) - size / 2;
     int z = random.nextInt(size) - size / 2;
+    Location randomLocation = vanillaBorder.getCenter().add(x, 0, z);
 
-    return world
-        .getHighestBlockAt(vanillaBorder.getCenter().add(x, 0, z))
-        .getLocation();
+    return world.getHighestBlockAt(randomLocation).getLocation();
   }
 }

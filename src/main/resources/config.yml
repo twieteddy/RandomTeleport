@@ -21,7 +21,9 @@ unsafe-blocks:
   - "FENCE_GATE"
   - "PORTAL"
   - "ENDER_PORTAL"
+
 messages:
   teleport-success: "&aDu wurdest $distanceTeleported Blöcke weit weg teleportiert"
   safespot-not-found: "&cEin sicherer Ort konnte leider nicht gefunden werden :("
   cooldown: "&cDu darfst dich nur alle $cooldown Sekunden teleportieren. Versuche es in $timeLeft Sekunden noch einmal"
+  onjoin-rtp: "&aDu wurdest beim Betreten der Welt an einen zufälligen Ort teleportiert"

@@ -10,19 +10,19 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class RtpCommand implements CommandExecutor {
+
   private final Config config;
   private final Border border;
   private final HashMap<UUID, Long> cooldowns;
 
-  public RtpCommand(Config config, Border border) {
+  public RtpCommand(Config config) {
     this.config = config;
-    this.border = border;
+    this.border = config.getBorder();
     this.cooldowns = new HashMap<>();
   }
 
   @Override
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-
     if (!(sender instanceof Player)) {
       return true;
     }
@@ -32,6 +32,7 @@ public class RtpCommand implements CommandExecutor {
     }
 
     Player player = (Player) sender;
+    Location oldLocation = player.getLocation();
 
     // Calculate cooldown
     if (!player.hasPermission("randomteleport.cooldown.bypass")) {
@@ -41,19 +42,17 @@ public class RtpCommand implements CommandExecutor {
         long diff = nextUsage - System.currentTimeMillis();
         player.sendMessage(config.getCooldownMessage(config.getCooldown(), diff));
         return true;
+      } else {
+        cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
       }
     }
-
-    // Update current cooldown
-    cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
-    Location oldLocation = player.getLocation();
 
     // Search for safe spot and teleport
     for (int i = 0; i < config.getMaxTries(); i++) {
       Location newLocation = border.getRandomLocation(player.getWorld());
       if (config.isSafeTeleportEnabled()) {
-        Material topBlock = newLocation.subtract(0d, 1d, 0d).getBlock().getType();
-        if (config.getUnsafeBlocks().contains(topBlock)) {
+        Material blockType = newLocation.getBlock().getType();
+        if (config.getUnsafeBlocks().contains(blockType)) {
           continue;
         }
       }

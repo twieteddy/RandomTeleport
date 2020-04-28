@@ -3,15 +3,16 @@ Adds the ability to teleport yourself to a random location inside the world bord
 Brettflan's [WorldBorder](https://www.spigotmc.org/resources/worldborder.60905/) plugin, both rectangular and elliptic mode.
 
 ## Requirements
-* Spigot 1.12.2
-* Java 1.8+
-* WorldBorder 1.8.7 *(optional)*
+* Spigot 1.15.2
+* Java 1.11
+* WorldBorder 1.9.10 *(optional)*
 
 ### Permissions
 | Permission                 | Description   | Default |
 | -------------------------- | ------------- | :-----: |
 | randomteleport.command.rtp | Grants access to random teleports  | op |
 | randomteleport.cooldown.bypass | Bypass cooldown | op |
+| randomteleport.onjoin | Teleport on world join | false |
 
 ### Settings
 * **safe-teleport:** *<true|false>* If turned on, deny teleports on blocks specified in the unsafe blocks list
